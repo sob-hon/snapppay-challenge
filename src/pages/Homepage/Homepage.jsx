@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Contacts from "../../components/Contacts/Contacts";
 import Loading from "../../components/Loading/Loading";
+import useDebounce from "../../hooks/useDebounce";
 import styles from "./Homepage.module.css";
 
 const Homepage = () => {
@@ -9,6 +10,10 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState("");
   const [sortOrder, setSortOrder] = useState("ASC");
   const [contacts, setContacts] = useState();
+
+  const debouncedValue = useDebounce(searchValue, 500);
+
+  console.log("Debounced value is: ", debouncedValue);
 
   const searchValueChangeHandler = (event) => {
     setSearchValue(event.target.value);
@@ -24,7 +29,7 @@ const Homepage = () => {
 
   const getSearchResult = async () => {
     setLoading(true);
-    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${searchValue}"}}&sort=createdAt ${sortOrder}&limit=30`;
+    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30`;
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
@@ -36,7 +41,7 @@ const Homepage = () => {
   useEffect(() => {
     getSearchResult();
     // eslint-disable-next-line
-  }, [selectedOption, searchValue, sortOrder]);
+  }, [selectedOption, debouncedValue, sortOrder]);
 
   return (
     <>

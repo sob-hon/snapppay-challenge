@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Homepage.module.css";
 
 const Homepage = () => {
   const [selectedOption, setSelectedOption] = useState("first_name");
   const [searchValue, setSearchValue] = useState("");
   const [sortOrder, setSortOrder] = useState("ASC");
+  const [contacts, setContacts] = useState([]);
 
   const searchValueChangeHandler = (event) => {
     setSearchValue(event.target.value);
@@ -20,7 +21,18 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
-  console.log(`where{"${selectedOption}":{"contains"}}`);
+  const getSearchResult = async () => {
+    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${searchValue}"}}&sort=createdAt ${sortOrder}&limit=30`;
+    const response = await fetch(query);
+    const data = await response.json();
+    setContacts(data.items);
+  };
+
+  console.log("contacts are: ",contacts);
+
+  useEffect(() => {
+    getSearchResult();
+  }, [selectedOption, searchValue, sortOrder]);
 
   return (
     <div className={styles.SearchWrapper}>

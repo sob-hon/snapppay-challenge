@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Contacts from "../../components/Contacts/Contacts";
 import Loading from "../../components/Loading/Loading";
+import getInitialSelectOption from "../../hooks/initialOptions";
 import useDebounce from "../../hooks/useDebounce";
 import styles from "./Homepage.module.css";
 
 const Homepage = () => {
-  const [selectedOption, setSelectedOption] = useState("first_name");
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [sortOrder, setSortOrder] = useState("ASC");
   const [contacts, setContacts] = useState();
+  const navigate = useNavigate();
+  const { initialSearchOption, initialSearchValue, initialOrder } =
+    getInitialSelectOption();
+  const [sortOrder, setSortOrder] = useState(initialOrder);
+  const [selectedOption, setSelectedOption] = useState(initialSearchOption);
+  const [searchValue, setSearchValue] = useState(initialSearchValue);
 
   const debouncedValue = useDebounce(searchValue, 500);
-
-  console.log("Debounced value is: ", debouncedValue);
 
   const searchValueChangeHandler = (event) => {
     setSearchValue(event.target.value);
@@ -33,10 +36,11 @@ const Homepage = () => {
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
+    navigate(query.slice(22));
     setContacts(data.items);
   };
 
-  console.log("contacts are: ", contacts);
+  
 
   useEffect(() => {
     getSearchResult();

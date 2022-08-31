@@ -8,7 +8,7 @@ const Homepage = () => {
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortOrder, setSortOrder] = useState("ASC");
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState();
 
   const searchValueChangeHandler = (event) => {
     setSearchValue(event.target.value);
@@ -35,6 +35,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getSearchResult();
+    // eslint-disable-next-line
   }, [selectedOption, searchValue, sortOrder]);
 
   return (
@@ -105,7 +106,16 @@ const Homepage = () => {
           </div>
         </form>
       </div>
-      {loading ? <Loading /> : <Contacts contacts={contacts} />}
+
+      {loading ? (
+        <Loading />
+      ) : contacts?.length === 0 ? (
+        <div className={styles.NotFound}>
+          Not found contacts with desired inputs
+        </div>
+      ) : (
+        <Contacts contacts={contacts} />
+      )}
     </>
   );
 };

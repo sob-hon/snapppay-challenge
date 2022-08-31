@@ -19,3 +19,11 @@
   margin-top: 18px;
   margin-left: 33px;
 }
+
+.NotFound {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

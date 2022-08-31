@@ -62,7 +62,7 @@ const Homepage = () => {
 
   return (
     <>
-      <div className={styles.SearchWrapper}>
+      <div className={styles.searchWrapper}>
         <form className={styles.searchTypeWrapper}>
           <div>
             <input
@@ -132,7 +132,7 @@ const Homepage = () => {
       {loading ? (
         <Loading />
       ) : contacts?.length === 0 ? (
-        <div className={styles.NotFound}>
+        <div className={styles.notFound}>
           Not found contacts with desired inputs
         </div>
       ) : (

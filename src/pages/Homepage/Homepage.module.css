@@ -1,4 +1,4 @@
-.SearchWrapper {
+.searchWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@
   margin-left: 33px;
 }
 
-.NotFound {
+.notFound {
   width: 100vw;
   height: 50vh;
   display: flex;

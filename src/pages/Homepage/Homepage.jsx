@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Contacts from "../../components/Contacts/Contacts";
 import Loading from "../../components/Loading/Loading";
-import getInitialSelectOption from "../../hooks/initialOptions";
+import useInitialOptions from "../../hooks/useInitialOptions";
 import useDebounce from "../../hooks/useDebounce";
 import styles from "./Homepage.module.css";
 
@@ -11,7 +11,7 @@ const Homepage = () => {
   const [contacts, setContacts] = useState();
   const navigate = useNavigate();
   const { initialSearchOption, initialSearchValue, initialOrder } =
-    getInitialSelectOption();
+    useInitialOptions();
   const [sortOrder, setSortOrder] = useState(initialOrder);
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
@@ -40,7 +40,20 @@ const Homepage = () => {
     setContacts(data.items);
   };
 
-  
+  const getContactsWithLimit = async () => {
+    setLoading(true);
+    let query = `http://localhost:1337/passenger?limit=5&skip=0`;
+    const response = await fetch(query);
+    const data = await response.json();
+    setLoading(false);
+    navigate(query.slice(22));
+    setContacts(data.items);
+  };
+
+  useEffect(() => {
+    getContactsWithLimit();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     getSearchResult();

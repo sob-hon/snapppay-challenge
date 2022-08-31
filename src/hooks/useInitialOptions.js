@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
-const getInitialSelectOption = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+const useInitialOptions = () => {
+  const [searchParams] = useSearchParams();
   const queryParams = JSON.parse(searchParams.get("where"));
   if (!queryParams)
     return {
@@ -19,4 +19,4 @@ const getInitialSelectOption = () => {
   return { initialSearchOption, initialSearchValue, initialOrder };
 };
 
-export default getInitialSelectOption;
+export default useInitialOptions;

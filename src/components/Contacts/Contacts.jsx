@@ -6,7 +6,7 @@ const Contacts = ({ contacts }) => {
   return (
     <div className={styles.ContactsWrapper}>
       {contacts?.map((contact) => (
-        <Contact contact={contact} />
+        <Contact key={contact.id} contact={contact} />
       ))}
     </div>
   );

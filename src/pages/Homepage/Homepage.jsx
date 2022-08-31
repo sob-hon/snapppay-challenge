@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Contacts from "../../components/Contacts/Contacts";
+import Loading from "../../components/Loading/Loading";
 import styles from "./Homepage.module.css";
 
 const Homepage = () => {
   const [selectedOption, setSelectedOption] = useState("first_name");
+  const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortOrder, setSortOrder] = useState("ASC");
   const [contacts, setContacts] = useState([]);
@@ -13,19 +15,19 @@ const Homepage = () => {
   };
 
   const optionChangeHandler = (event) => {
-    console.log("options value: ", event.target.value);
     setSelectedOption(event.target.value);
   };
 
   const sortOptionChangedHandler = (event) => {
-    console.log("sort option value: ", event.target.value);
     setSortOrder(event.target.value);
   };
 
   const getSearchResult = async () => {
+    setLoading(true);
     let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${searchValue}"}}&sort=createdAt ${sortOrder}&limit=30`;
     const response = await fetch(query);
     const data = await response.json();
+    setLoading(false);
     setContacts(data.items);
   };
 
@@ -103,7 +105,7 @@ const Homepage = () => {
           </div>
         </form>
       </div>
-      <Contacts contacts={contacts}/>
+      {loading ? <Loading /> : <Contacts contacts={contacts} />}
     </>
   );
 };

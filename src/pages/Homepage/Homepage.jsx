@@ -40,21 +40,6 @@ const Homepage = () => {
     setContacts(data.items);
   };
 
-  const getContactsWithLimit = async () => {
-    setLoading(true);
-    let query = `http://localhost:1337/passenger?limit=5&skip=0`;
-    const response = await fetch(query);
-    const data = await response.json();
-    setLoading(false);
-    navigate(query.slice(22));
-    setContacts(data.items);
-  };
-
-  useEffect(() => {
-    getContactsWithLimit();
-    // eslint-disable-next-line
-  }, []);
-
   useEffect(() => {
     getSearchResult();
     // eslint-disable-next-line

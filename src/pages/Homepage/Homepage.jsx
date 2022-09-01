@@ -17,6 +17,7 @@ const Homepage = () => {
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(1);
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -36,13 +37,14 @@ const Homepage = () => {
 
   const getSearchResult = async () => {
     setLoading(true);
-    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${currentPage}`;
+    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${currentPage - 1}`;
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
     navigate(query.slice(22));
     setContacts(data.items);
-    setCurrentPage(data.meta.skipped);
+    setCurrentPage(data.meta.skipped + 1);
+    setTotal(data.meta.total);
   };
 
   useEffect(() => {
@@ -129,7 +131,11 @@ const Homepage = () => {
         <Contacts contacts={contacts} />
       )}
 
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        total={total}
+      />
     </>
   );
 };

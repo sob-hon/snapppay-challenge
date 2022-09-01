@@ -41,10 +41,9 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
-
   const getSearchResult = async () => {
     setLoading(true);
-    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
+    const query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
       currentPage - 1
     }`;
     const response = await fetch(query);

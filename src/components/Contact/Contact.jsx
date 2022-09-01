@@ -1,10 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import BrokenRobotImage from "../../assets/broken-robot.png";
 import { useRecentlyVisitedContacts } from "../../context/recent-contacts-context";
-import styles from "./Contact.module.css"
+import styles from "./Contact.module.css";
 
 const Contact = ({ contact }) => {
   const recentContactsContext = useRecentlyVisitedContacts();
+  const navigate = useNavigate();
 
   const contactClickedHandler = () => {
     let newContacts;
@@ -19,6 +21,7 @@ const Contact = ({ contact }) => {
         return [...prevContacts, contact];
       }
     });
+    navigate(`/passenger/${contact.id}`);
   };
 
   return (

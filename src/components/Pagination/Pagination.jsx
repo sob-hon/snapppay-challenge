@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Pagination.module.css";
 
-const Pagination = ({ currentPage, setCurrentPage, response }) => {
-  const totalPages = response.totalPages - 1;
+const Pagination = ({ currentPage, setCurrentPage }) => {
+  const totalPages = Math.floor(4000 / 30); // refactor this with data from server
   const pageNumberLimit = 3;
   const [maxPageLimit, setMaxPageLimit] = useState(5);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const onPageChange = (pageNumber) => {
+    console.log("page number: ", pageNumber);
     setCurrentPage(pageNumber);
   };
 
@@ -43,7 +44,7 @@ const Pagination = ({ currentPage, setCurrentPage, response }) => {
           key={page}
           id={page}
           onClick={pageNumberClickedHandler}
-          className={currentPage === page ? "active" : null}
+          className={styles.pageNumber + ' ' + currentPage === page ? styles.active : ""}
         >
           {page}
         </li>
@@ -52,6 +53,7 @@ const Pagination = ({ currentPage, setCurrentPage, response }) => {
       return null;
     }
   });
+
   return (
     <div className={styles.main}>
       <ul className={styles.pageNumbers}>

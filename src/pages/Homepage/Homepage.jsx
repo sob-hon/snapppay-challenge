@@ -5,6 +5,7 @@ import Loading from "../../components/Loading/Loading";
 import useInitialOptions from "../../hooks/useInitialOptions";
 import useDebounce from "../../hooks/useDebounce";
 import styles from "./Homepage.module.css";
+import Pagination from "../../components/Pagination/Pagination";
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ const Homepage = () => {
   const [sortOrder, setSortOrder] = useState(initialOrder);
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -30,20 +32,23 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
+  console.log("current page: ", currentPage);
+
   const getSearchResult = async () => {
     setLoading(true);
-    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30`;
+    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${currentPage}`;
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
     navigate(query.slice(22));
     setContacts(data.items);
+    setCurrentPage(data.meta.skipped);
   };
 
   useEffect(() => {
     getSearchResult();
     // eslint-disable-next-line
-  }, [selectedOption, debouncedValue, sortOrder]);
+  }, [selectedOption, debouncedValue, sortOrder, currentPage]);
 
   return (
     <>
@@ -123,6 +128,8 @@ const Homepage = () => {
       ) : (
         <Contacts contacts={contacts} />
       )}
+
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </>
   );
 };

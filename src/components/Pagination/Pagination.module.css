@@ -36,3 +36,7 @@
 .pageNumbers li.button:focus {
   outline: none;
 }
+
+.pageNumber {
+  cursor: pointer;
+}

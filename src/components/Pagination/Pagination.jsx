@@ -1,35 +1,40 @@
 import React from "react";
 import styles from "./Pagination.module.css";
 
-const Pagination = () => {
-  const {
-    currentPage,
-    maxPageLimit,
-    minPageLimit,
-    response,
-    onPrevClick,
-    onNextClick,
-    onPageChange,
-  } = props;
+const Pagination = ({ currentPage, setCurrentPage, response }) => {
   const totalPages = response.totalPages - 1;
-  const data = response.data;
+  const pageNumberLimit = 3;
+  const [maxPageLimit, setMaxPageLimit] = useState(5);
+  const [minPageLimit, setMinPageLimit] = useState(0);
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const prevBtnClickedHandler = () => {
+    if ((currentPage - 1) % pageNumberLimit === 0) {
+      setMaxPageLimit(maxPageLimit - pageNumberLimit);
+      setMinPageLimit(minPageLimit - pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const nextBtnClickedHandler = () => {
+    if (currentPage + 1 > maxPageLimit) {
+      setMaxPageLimit(maxPageLimit + pageNumberLimit);
+      setMinPageLimit(minPageLimit + pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const pageNumberClickedHandler = (event) => {
+    onPageChange(Number(event.target.id));
+  };
 
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
-
-  const handlePrevClick = () => {
-    onPrevClick();
-  };
-
-  const handleNextClick = () => {
-    onNextClick();
-  };
-
-  const handlePageClick = (e) => {
-    onPageChange(Number(e.target.id));
-  };
 
   const pageNumbers = pages.map((page) => {
     if (page <= maxPageLimit && page > minPageLimit) {
@@ -37,7 +42,7 @@ const Pagination = () => {
         <li
           key={page}
           id={page}
-          onClick={handlePageClick}
+          onClick={pageNumberClickedHandler}
           className={currentPage === page ? "active" : null}
         >
           {page}
@@ -51,14 +56,17 @@ const Pagination = () => {
     <div className={styles.main}>
       <ul className={styles.pageNumbers}>
         <li>
-          <button onClick={handlePrevClick} disabled={currentPage === pages[0]}>
+          <button
+            onClick={prevBtnClickedHandler}
+            disabled={currentPage === pages[0]}
+          >
             Prev
           </button>
         </li>
         {pageNumbers}
         <li>
           <button
-            onClick={handleNextClick}
+            onClick={nextBtnClickedHandler}
             disabled={currentPage === pages[pages.length - 1]}
           >
             Next

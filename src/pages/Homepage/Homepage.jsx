@@ -24,7 +24,7 @@ const Homepage = () => {
 
   console.log(
     "recently from homepage: ",
-    recentContactsContext.recentlyVisitedContacts
+    recentContactsContext.recentlyVisitedContacts.length
   );
 
   const debouncedValue = useDebounce(searchValue, 500);
@@ -130,15 +130,22 @@ const Homepage = () => {
           </div>
         </form>
       </div>
-
-      {recentContactsContext.recentlyVisitedContacts?.map((el) => (
+      {recentContactsContext.recentlyVisitedContacts.length !== 0 ? (
         <>
-          <span>---------------------</span>
-          {el.first_name}
-          {/* <Contact key={el.id} contact={el} /> */}
-          <span>---------------------</span>
+          <h2 className={styles.recentlyVisitedHeader}>
+            Recently Visited Contacts
+          </h2>
+          <div className={styles.recentlyVisitedWrapper}>
+            {recentContactsContext.recentlyVisitedContacts.map(
+              (recentContact) => (
+                <Contact key={recentContact.id} contact={recentContact} />
+              )
+            )}
+          </div>
         </>
-      ))}
+      ) : (
+        ""
+      )}
 
       {loading ? (
         <Loading />

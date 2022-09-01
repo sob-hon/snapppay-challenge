@@ -13,7 +13,6 @@ const Contact = ({ contact }) => {
         newContacts = prevContacts;
         newContacts.shift();
         newContacts.push(contact);
-        console.log("recently visited array from contact: ", newContacts);
         return [...newContacts];
       } else {
         return [...prevContacts, contact];

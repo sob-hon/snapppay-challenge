@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import BrokenRobotImage from "../../assets/broken-robot.png";
-import { useRecentlyVisitedContacts } from "../../context/recent-contacts-context";
+import { useRecentlyVisitedContacts } from "../../context/recentContactsContext";
 import styles from "./Contact.module.css";
 
 const Contact = ({ contact }) => {

@@ -1,7 +1,7 @@
 import Homepage from "./pages/Homepage/Homepage";
 import { ContactPage } from "./pages/ContactPage/ContactPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { RecentlyVisitedContactsProvider } from "./context/recent-contacts-context";
+import { RecentlyVisitedContactsProvider } from "./context/recentContactsContext";
 import "./App.css";
 
 function App() {

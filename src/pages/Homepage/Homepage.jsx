@@ -4,12 +4,25 @@ import Contacts from "../../components/Contacts/Contacts";
 import Loading from "../../components/Loading/Loading";
 import useInitialOptions from "../../hooks/useInitialOptions";
 import useDebounce from "../../hooks/useDebounce";
-import { useRecentlyVisitedContacts } from "../../context/recent-contacts-context";
+import { useRecentlyVisitedContacts } from "../../context/recentContactsContext";
 import styles from "./Homepage.module.css";
 import Pagination from "../../components/Pagination/Pagination";
-import Contact from "../../components/Contact/Contact";
+import Contact from "src/components/Contact/Contact";
+
+// absolute import
+// useReducer if router doesn't works
+// add skip to fetch from url
+// add custom api function
+// useFetch hook
+// create custom components
+// handle first site visit
+// change ul styles
+// make radio input & label a separate component
+// add recently visited contacts to local storage
 
 const Homepage = () => {
+  const base_url = process.env.REACT_APP_BASE_URL;
+  console.log("base", base_url);
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState();
   const navigate = useNavigate();

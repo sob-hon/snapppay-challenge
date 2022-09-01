@@ -1,6 +1,7 @@
 import React from "react";
 import BrokenRobotImage from "../../assets/broken-robot.png";
 import { useRecentlyVisitedContacts } from "../../context/recent-contacts-context";
+import styles from "./Contact.module.css"
 
 const Contact = ({ contact }) => {
   const recentContactsContext = useRecentlyVisitedContacts();
@@ -21,7 +22,7 @@ const Contact = ({ contact }) => {
   };
 
   return (
-    <div onClick={contactClickedHandler}>
+    <div className={styles.contactWrapper} onClick={contactClickedHandler}>
       <img
         key={contact.id}
         src={contact.avatar ? contact.avatar : BrokenRobotImage}

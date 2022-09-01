@@ -9,20 +9,21 @@ import styles from "./Homepage.module.css";
 import Pagination from "../../components/Pagination/Pagination";
 import Contact from "components/Contact/Contact";
 import { client } from "utils/client";
+import { getItem } from "utils/localStorage";
 
 // absolute import ✅
 // useReducer if router doesn't works
 // add skip to fetch from url
 // add custom api function ✅
+// add localStorage utility ✅
 // useFetch hook
 // create custom components
 // handle first site visit
 // change ui styles
 // make radio input & label a separate component
-// add recently visited contacts to local storage
+// add recently visited contacts to local storage 
 
 const Homepage = () => {
-
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState();
   const navigate = useNavigate();
@@ -34,7 +35,6 @@ const Homepage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
   const recentContactsContext = useRecentlyVisitedContacts();
-
 
   const debouncedValue = useDebounce(searchValue, 500);
 

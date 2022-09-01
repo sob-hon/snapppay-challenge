@@ -7,22 +7,22 @@ import useDebounce from "../../hooks/useDebounce";
 import { useRecentlyVisitedContacts } from "../../context/recentContactsContext";
 import styles from "./Homepage.module.css";
 import Pagination from "../../components/Pagination/Pagination";
-import Contact from "src/components/Contact/Contact";
+import Contact from "components/Contact/Contact";
+import { client } from "utils/client";
 
-// absolute import
+// absolute import ✅
 // useReducer if router doesn't works
 // add skip to fetch from url
-// add custom api function
+// add custom api function ✅
 // useFetch hook
 // create custom components
 // handle first site visit
-// change ul styles
+// change ui styles
 // make radio input & label a separate component
 // add recently visited contacts to local storage
 
 const Homepage = () => {
-  const base_url = process.env.REACT_APP_BASE_URL;
-  console.log("base", base_url);
+
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState();
   const navigate = useNavigate();
@@ -35,10 +35,6 @@ const Homepage = () => {
   const [total, setTotal] = useState(1);
   const recentContactsContext = useRecentlyVisitedContacts();
 
-  console.log(
-    "recently from homepage: ",
-    recentContactsContext.recentlyVisitedContacts.length
-  );
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -56,13 +52,12 @@ const Homepage = () => {
 
   const getSearchResult = async () => {
     setLoading(true);
-    const query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
+    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
       currentPage - 1
     }`;
-    const response = await fetch(query);
-    const data = await response.json();
+    const data = await client("passenger/" + query);
     setLoading(false);
-    navigate(query.slice(32));
+    navigate(query);
     setContacts(data.items);
     setCurrentPage(data.meta.skipped + 1);
     setTotal(data.meta.total);

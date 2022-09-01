@@ -1,9 +1,4 @@
 {
-  "compilerOptions": {
-    "paths": {
-        "@src/*": ["./src/*"],
-    },
-    "baseUrl": "."
-  },
-  "include": ["src"]
-}
+    "compilerOptions": { "baseUrl": "src" },
+    "include": ["src"]
+}  

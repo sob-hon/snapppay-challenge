@@ -41,7 +41,6 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
-  console.log("current page: ", currentPage);
 
   const getSearchResult = async () => {
     setLoading(true);
@@ -51,7 +50,7 @@ const Homepage = () => {
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
-    navigate(query.slice(22));
+    navigate(query.slice(32));
     setContacts(data.items);
     setCurrentPage(data.meta.skipped + 1);
     setTotal(data.meta.total);

@@ -4,8 +4,10 @@ import Contacts from "../../components/Contacts/Contacts";
 import Loading from "../../components/Loading/Loading";
 import useInitialOptions from "../../hooks/useInitialOptions";
 import useDebounce from "../../hooks/useDebounce";
+import { useRecentlyVisitedContacts } from "../../context/recent-contacts-context";
 import styles from "./Homepage.module.css";
 import Pagination from "../../components/Pagination/Pagination";
+import Contact from "../../components/Contact/Contact";
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,12 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
+  const recentContactsContext = useRecentlyVisitedContacts();
+
+  console.log(
+    "recently from homepage: ",
+    recentContactsContext.recentlyVisitedContacts
+  );
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -37,7 +45,9 @@ const Homepage = () => {
 
   const getSearchResult = async () => {
     setLoading(true);
-    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${currentPage - 1}`;
+    let query = `http://localhost:1337/passenger/?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
+      currentPage - 1
+    }`;
     const response = await fetch(query);
     const data = await response.json();
     setLoading(false);
@@ -120,6 +130,15 @@ const Homepage = () => {
           </div>
         </form>
       </div>
+
+      {recentContactsContext.recentlyVisitedContacts?.map((el) => (
+        <>
+          <span>---------------------</span>
+          {el.first_name}
+          {/* <Contact key={el.id} contact={el} /> */}
+          <span>---------------------</span>
+        </>
+      ))}
 
       {loading ? (
         <Loading />

@@ -1,11 +1,11 @@
-function RadioButton({ id, value, checked, onChange, label }) {
+function RadioButton({ id, value, checked, onChange, name, label }) {
   return (
     <div>
       <input
         type="radio"
         id={id}
         value={value}
-        name="radio-group"
+        name={name}
         checked={checked}
         onChange={onChange}
       />
@@ -14,4 +14,4 @@ function RadioButton({ id, value, checked, onChange, label }) {
   );
 }
 
-export { RadioButton }
+export { RadioButton };

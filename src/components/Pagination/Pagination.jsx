@@ -3,7 +3,7 @@ import React from 'react';
 export const getPaginationGenerator = (
   currentPageNumber,
   totalPageNumber,
-  offset = 2,
+  offset = 3,
 ) => {
   // By doing this, when we are close to the beginning or end of the pagination, two numbers are generated after/before the current page,
   // but when we are far from these points (in the middle of the pagination), we generate only one number after/before the current page.
@@ -48,13 +48,10 @@ export const getPaginationGenerator = (
 
 const Pagination = ({ skip, setSkip, totalData, dataPerPage = 30 }) => {
   const totalPages = Math.ceil(totalData / dataPerPage);
-  // const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-  const pageNumbers = [...Array(totalPages).keys()].slice(1);
 
   const nextPageBtnClickedHandler = () => {
     if (skip !== totalPages) {
       setSkip(prevPage => prevPage + 1);
-      // setCurrentPage(currentPage + 1);
     }
   };
 

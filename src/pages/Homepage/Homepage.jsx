@@ -9,19 +9,20 @@ import styles from './Homepage.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import Contact from 'components/Contact/Contact';
 import { client } from 'utils/client';
-import { RadioButton } from 'components/Form/RadioButton/RadioButton';
+import { RadioButton } from 'components/RadioButton/RadioButton';
+import Form from 'components/Form/Form';
 
-// absolute import ✅
 // useReducer if router doesn't works
-// add skip to fetch from url
-// add custom api function ✅
-// add localStorage utility ✅
+// handle first site visit
 // useFetch hook
 // create custom components
-// handle first site visit
 // change ui styles
+// add skip to fetch from url ✅
+// add localStorage utility ✅
+// add recently visited contacts to local storage ✅
+// add custom api function ✅
 // make radio input & label a separate component ✅
-// add recently visited contacts to local storage
+// absolute import ✅
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
@@ -71,14 +72,15 @@ const Homepage = () => {
 
   return (
     <>
-      <div className={styles.searchWrapper}>
-        <form className={styles.searchTypeWrapper}>
+      <Form className={styles.searchWrapper}>
+        <div className={styles.searchTypeWrapper}>
           <RadioButton
             id="firstName"
             value="first_name"
             checked={selectedOption === 'first_name'}
             onChange={optionChangeHandler}
             label={'First Name'}
+            name={'field-of-search'}
           />
           <RadioButton
             id="lastName"
@@ -86,6 +88,7 @@ const Homepage = () => {
             checked={selectedOption === 'last_name'}
             onChange={optionChangeHandler}
             label={'Last Name'}
+            name={'field-of-search'}
           />
           <RadioButton
             id="phoneNumber"
@@ -93,20 +96,22 @@ const Homepage = () => {
             checked={selectedOption === 'phone'}
             onChange={optionChangeHandler}
             label={'Phone Number'}
+            name={'field-of-search'}
           />
-        </form>
+        </div>
         <input
           type="text"
           value={searchValue}
           onChange={searchValueChangeHandler}
         />
-        <form className={styles.orderTypeWrapper}>
+        <div className={styles.orderTypeWrapper}>
           <RadioButton
             id="ascending"
             value="ASC"
             checked={sortOrder === 'ASC'}
             onChange={sortOptionChangedHandler}
             label={'Ascending'}
+            name={'sort-order'}
           />
           <RadioButton
             id="descending"
@@ -114,9 +119,11 @@ const Homepage = () => {
             checked={sortOrder === 'DESC'}
             onChange={sortOptionChangedHandler}
             label={'Descending'}
+            name={'sort-order'}
           />
-        </form>
-      </div>
+        </div>
+      </Form>
+
       {recentContactsContext.recentlyVisitedContacts?.length !== 0 ? (
         <>
           <h2 className={styles.recentlyVisitedHeader}>
@@ -143,8 +150,11 @@ const Homepage = () => {
       ) : (
         <Contacts contacts={contacts} />
       )}
-
-      <Pagination setSkip={setSkip} skip={skip} totalData={total} />
+      {contacts?.length !== 0 ? (
+        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
+      ) : (
+        ''
+      )}
     </>
   );
 };

@@ -1,7 +1,8 @@
-import React, { Children } from 'react';
+import React from 'react';
+import styles from "./Form.module.css"
 
-const Form = ({ children, style }) => {
-  return <div className={style}>{children}</div>;
+const Form = ({ children }) => {
+  return <div className={styles.formWrapper}>{children}</div>;
 };
 
 export default Form;

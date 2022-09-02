@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Pagination.module.css';
 
 export const getPaginationGenerator = (
   currentPageNumber,
@@ -66,13 +67,21 @@ const Pagination = ({ skip, setSkip, totalData, dataPerPage = 30 }) => {
   };
 
   return (
-    <div>
-      <button onClick={prevPageBtnClickedHandler}>prev</button>
+    <div className={styles.paginationWrapper}>
+      <button
+        className={styles.paginateBtn}
+        onClick={prevPageBtnClickedHandler}
+      >
+        <span>{'<'}</span>
+      </button>
       {getPaginationGenerator(skip, totalPages).map((pageNumber, index) => {
         if (pageNumber !== '...') {
           return (
             <span
               key={index}
+              className={`${styles.pageNumber} ${
+                skip === pageNumber ? styles.pageNumberActive : ''
+              }`}
               onClick={() => pageNumberClickedHandler(pageNumber)}
             >
               {pageNumber}
@@ -83,7 +92,12 @@ const Pagination = ({ skip, setSkip, totalData, dataPerPage = 30 }) => {
         }
       })}
 
-      <button onClick={nextPageBtnClickedHandler}>next</button>
+      <button
+        className={styles.paginateBtn}
+        onClick={nextPageBtnClickedHandler}
+      >
+        <span>{'>'}</span>
+      </button>
     </div>
   );
 };

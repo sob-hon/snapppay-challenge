@@ -32,8 +32,7 @@ const Homepage = () => {
   const [sortOrder, setSortOrder] = useState(initialOrder);
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
-  const [skip, setSkip] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [skip, setSkip] = useState(1);
   const [total, setTotal] = useState(1);
   const recentContactsContext = useRecentlyVisitedContacts();
 
@@ -51,24 +50,24 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
-  console.log('current page: ', currentPage);
   const getSearchResult = async () => {
     setLoading(true);
-    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
-      (currentPage - 1) * skip
+    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${skip}`;
+    const sedQuery = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
+      (skip - 1) * 30
     }`;
-    const data = await client('passenger/' + query);
+
+    const data = await client('passenger/' + sedQuery);
     setLoading(false);
     navigate(query);
     setContacts(data.items);
-    setSkip(data.meta.skipped + 30);
     setTotal(data.meta.total);
   };
 
   useEffect(() => {
     getSearchResult();
     // eslint-disable-next-line
-  }, [selectedOption, debouncedValue, sortOrder, currentPage]);
+  }, [selectedOption, debouncedValue, sortOrder, skip]);
 
   return (
     <>
@@ -145,12 +144,7 @@ const Homepage = () => {
         <Contacts contacts={contacts} />
       )}
 
-      <Pagination
-        skip={skip}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalData={total}
-      />
+      <Pagination setSkip={setSkip} skip={skip} totalData={total} />
     </>
   );
 };

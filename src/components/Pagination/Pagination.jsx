@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import styles from "./Pagination.module.css";
+import React, { useState } from 'react';
+import styles from './Pagination.module.css';
 
 const Pagination = ({ currentPage, setCurrentPage, total }) => {
+  console.log(total);
   const totalPages = Math.floor(total / 30) === 0 ? 1 : Math.floor(total / 30); // refactor this with data from server
   const pageNumberLimit = 3;
   const [maxPageLimit, setMaxPageLimit] = useState(5);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
-  const onPageChange = (pageNumber) => {
-    console.log("page number: ", pageNumber);
+  const onPageChange = pageNumber => {
     setCurrentPage(pageNumber);
   };
 
@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, setCurrentPage, total }) => {
       setMaxPageLimit(maxPageLimit - pageNumberLimit);
       setMinPageLimit(minPageLimit - pageNumberLimit);
     }
-    setCurrentPage((prev) => prev - 1);
+    setCurrentPage(prev => prev - 1);
   };
 
   const nextBtnClickedHandler = () => {
@@ -25,10 +25,10 @@ const Pagination = ({ currentPage, setCurrentPage, total }) => {
       setMaxPageLimit(maxPageLimit + pageNumberLimit);
       setMinPageLimit(minPageLimit + pageNumberLimit);
     }
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage(prev => prev + 30);
   };
 
-  const pageNumberClickedHandler = (event) => {
+  const pageNumberClickedHandler = event => {
     onPageChange(Number(event.target.id));
   };
 
@@ -37,16 +37,16 @@ const Pagination = ({ currentPage, setCurrentPage, total }) => {
     pages.push(i);
   }
 
-  const pageNumbers = pages.map((page) => {
+  const pageNumbers = pages.map(page => {
     if (page <= maxPageLimit && page > minPageLimit) {
       return (
         <li
           key={page}
           id={page}
           onClick={pageNumberClickedHandler}
-          className={
-            styles.pageNumber + " " + currentPage === page ? styles.active : ""
-          }
+          className={`${styles.pageNumber} ${
+            currentPage === page ? styles.active : ''
+          }`}
         >
           {page}
         </li>

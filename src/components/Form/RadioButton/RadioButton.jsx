@@ -9,9 +9,9 @@ function RadioButton({ id, value, checked, onChange, label }) {
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor="lastName">{label}</label>
+      <label htmlFor={id}>{label}</label>
     </div>
-  )
+  );
 }
 
 export { RadioButton }

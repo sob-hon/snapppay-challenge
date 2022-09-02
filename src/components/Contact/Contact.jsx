@@ -1,8 +1,9 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import BrokenRobotImage from "../../assets/broken-robot.png";
-import { useRecentlyVisitedContacts } from "../../context/recentContactsContext";
-import styles from "./Contact.module.css";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setItem } from 'utils/localStorage';
+import BrokenRobotImage from '../../assets/broken-robot.png';
+import { useRecentlyVisitedContacts } from '../../context/recentContactsContext';
+import styles from './Contact.module.css';
 
 const Contact = ({ contact }) => {
   const recentContactsContext = useRecentlyVisitedContacts();
@@ -10,17 +11,22 @@ const Contact = ({ contact }) => {
 
   const contactClickedHandler = () => {
     let newContacts;
-    recentContactsContext.setRecentlyVisitedContacts((prevContacts) => {
-      if (prevContacts.find((c) => c.id === contact.id)) return prevContacts;
+    recentContactsContext.setRecentlyVisitedContacts(prevContacts => {
+      if (prevContacts.find(c => c.id === contact.id)) return prevContacts;
       if (prevContacts.length === 4) {
         newContacts = prevContacts;
         newContacts.shift();
         newContacts.push(contact);
-        return [...newContacts];
+        newContacts = [...newContacts];
+        return newContacts;
       } else {
-        return [...prevContacts, contact];
+        newContacts = [...prevContacts, contact];
+        return newContacts;
       }
     });
+    if (newContacts !== undefined) {
+      setItem('recentlyVisitedContacts', JSON.stringify(newContacts));
+    }
     navigate(`/passenger/${contact.id}`);
   };
 

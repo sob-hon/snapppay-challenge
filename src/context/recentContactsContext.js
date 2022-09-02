@@ -1,9 +1,13 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
+import { getItem } from 'utils/localStorage';
 
 const RecentlyVisitedContactsContext = createContext();
 
 function RecentlyVisitedContactsProvider({ children }) {
-  const [recentlyVisitedContacts, setRecentlyVisitedContacts] = useState([]);
+  const defaultRecentContacts = JSON.parse(getItem('recentlyVisitedContacts'));
+  const [recentlyVisitedContacts, setRecentlyVisitedContacts] = useState(
+    defaultRecentContacts ? defaultRecentContacts : [],
+  );
 
   const value = {
     recentlyVisitedContacts,
@@ -20,7 +24,7 @@ function RecentlyVisitedContactsProvider({ children }) {
 function useRecentlyVisitedContacts() {
   const context = useContext(RecentlyVisitedContactsContext);
   if (context === undefined) {
-    throw new Error("useCount must be used within a CountProvider");
+    throw new Error('useCount must be used within a CountProvider');
   }
   return context;
 }

@@ -20,7 +20,7 @@ import { RadioButton } from 'components/Form/RadioButton/RadioButton';
 // create custom components
 // handle first site visit
 // change ui styles
-// make radio input & label a separate component
+// make radio input & label a separate component ✅
 // add recently visited contacts to local storage
 
 const Homepage = () => {
@@ -117,13 +117,13 @@ const Homepage = () => {
           />
         </form>
       </div>
-      {recentContactsContext.recentlyVisitedContacts.length !== 0 ? (
+      {recentContactsContext.recentlyVisitedContacts?.length !== 0 ? (
         <>
           <h2 className={styles.recentlyVisitedHeader}>
             Recently Visited Contacts
           </h2>
           <div className={styles.recentlyVisitedWrapper}>
-            {recentContactsContext.recentlyVisitedContacts.map(
+            {recentContactsContext?.recentlyVisitedContacts?.map(
               recentContact => (
                 <Contact key={recentContact.id} contact={recentContact} />
               ),

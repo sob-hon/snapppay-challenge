@@ -20,7 +20,6 @@ export const ContactPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(contact?.address);
 
   return (
     <>

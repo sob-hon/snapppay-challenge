@@ -27,16 +27,13 @@ const Homepage = () => {
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState();
   const navigate = useNavigate();
-  const {
-    initialSearchOption,
-    initialSearchValue,
-    initialOrder,
-    initialCurrentPage,
-  } = useInitialOptions();
+  const { initialSearchOption, initialSearchValue, initialOrder } =
+    useInitialOptions();
   const [sortOrder, setSortOrder] = useState(initialOrder);
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
-  const [currentPage, setCurrentPage] = useState(initialCurrentPage);
+  const [skip, setSkip] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
   const recentContactsContext = useRecentlyVisitedContacts();
 
@@ -54,17 +51,17 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
+  console.log('current page: ', currentPage);
   const getSearchResult = async () => {
-    console.log('current page: ', currentPage);
     setLoading(true);
     const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=${
-      currentPage - 1
+      (currentPage - 1) * skip
     }`;
     const data = await client('passenger/' + query);
     setLoading(false);
     navigate(query);
     setContacts(data.items);
-    setCurrentPage(data.meta.skipped + 1);
+    setSkip(data.meta.skipped + 30);
     setTotal(data.meta.total);
   };
 
@@ -149,9 +146,10 @@ const Homepage = () => {
       )}
 
       <Pagination
+        skip={skip}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        total={total}
+        totalData={total}
       />
     </>
   );

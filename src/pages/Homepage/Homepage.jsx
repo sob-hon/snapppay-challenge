@@ -10,6 +10,7 @@ import Contacts from 'components/Contacts/Contacts';
 import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
+import { shouldChangeUrl } from 'utils/shouldChangeUrl';
 
 // useReducer if router doesn't work
 // handle first site visit
@@ -55,7 +56,12 @@ const Homepage = () => {
     const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=`;
     const data = await client('passenger/' + query + (skip - 1) * 30);
     setLoading(false);
-    navigate(query + skip);
+    shouldChangeUrl(
+      initialSearchOption,
+      initialSearchValue,
+      initialOrder,
+      initialSkip,
+    ) || navigate(query + skip);
     setContacts(data.items);
     setTotal(data.meta.total);
   };

@@ -1,0 +1,21 @@
+.formWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchTypeWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-right: 30px;
+  margin-top: 20px;
+}
+
+.orderTypeWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: 33px;
+}

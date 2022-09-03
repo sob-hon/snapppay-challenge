@@ -10,6 +10,7 @@ import {
   FaMapMarkerAlt,
 } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import Detail from 'components/Detail/Detail';
 
 export const ContactPage = () => {
   const urlParams = useParams();
@@ -45,37 +46,28 @@ export const ContactPage = () => {
 
             <p className={styles.about}>{contact?.note}</p>
 
-            <div className={styles.content}>
-              <MdEmail />
-              <p>{contact?.email}</p>
-            </div>
-
-            <div className={styles.content}>
-              <FaPhone />
-              <p>{contact?.phone}</p>
-            </div>
-
-            {contact?.address && (
-              <div className={styles.content}>
-                <FaMapMarkerAlt />
-                <p>{contact?.address}</p>
-              </div>
-            )}
-
-            <div className={styles.content}>
-              <FaBuilding />
-              <p>{contact?.company}</p>
-            </div>
-
-            <div className={styles.content}>
-              <FaTelegramPlane />
-              <p>{contact?.telegram}</p>
-            </div>
-
-            <div className={styles.content}>
-              <FaTransgenderAlt />
-              <p>{contact?.gender}</p>
-            </div>
+            <Detail detail={contact} subField={'email'} Icon={<MdEmail />} />
+            <Detail detail={contact} subField={'phone'} Icon={<FaPhone />} />
+            <Detail
+              detail={contact}
+              subField={'address'}
+              Icon={<FaMapMarkerAlt />}
+            />
+            <Detail
+              detail={contact}
+              subField={'company'}
+              Icon={<FaBuilding />}
+            />
+            <Detail
+              detail={contact}
+              subField={'telegram'}
+              Icon={<FaTelegramPlane />}
+            />
+            <Detail
+              detail={contact}
+              subField={'gender'}
+              Icon={<FaTransgenderAlt />}
+            />
           </div>
         </div>
       </div>

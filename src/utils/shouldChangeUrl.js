@@ -10,8 +10,8 @@ const shouldChangeUrl = ({
     initialOrder !== 'ASC' &&
     initialSkip !== 1
   ) {
-    return true;
-  } else return false;
+    return false;
+  } else return true;
 };
 
 export { shouldChangeUrl };

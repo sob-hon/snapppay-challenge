@@ -15,8 +15,8 @@ import { shouldChangeUrl } from 'utils/shouldChangeUrl';
 // useReducer if router doesn't work
 // handle first site visit
 // useFetch hook
-// create custom components
-// change ui styles
+// create custom components ✅
+// change ui styles => card style
 // add skip to fetch from url ✅
 // add localStorage utility ✅
 // add recently visited contacts to local storage ✅
@@ -41,6 +41,7 @@ const Homepage = () => {
 
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);
+    setSkip(1);
   };
 
   const optionChangeHandler = event => {
@@ -56,12 +57,16 @@ const Homepage = () => {
     const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=`;
     const data = await client('passenger/' + query + (skip - 1) * 30);
     setLoading(false);
-    shouldChangeUrl(
-      initialSearchOption,
-      initialSearchValue,
-      initialOrder,
-      initialSkip,
-    ) || navigate(query + skip);
+    if (
+      shouldChangeUrl(
+        initialSearchOption,
+        initialSearchValue,
+        initialOrder,
+        initialSkip,
+      )
+    ) {
+      navigate(query + skip);
+    }
     setContacts(data.items);
     setTotal(data.meta.total);
   };

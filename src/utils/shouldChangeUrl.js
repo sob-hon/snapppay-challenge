@@ -5,10 +5,10 @@ const shouldChangeUrl = ({
   initialSkip,
 }) => {
   if (
-    initialSearchOption !== 'first_name' &&
-    initialSearchValue !== '' &&
-    initialOrder !== 'ASC' &&
-    initialSkip !== 1
+    initialSearchOption === 'first_name' &&
+    initialSearchValue === '' &&
+    initialOrder === 'ASC' &&
+    initialSkip === 1
   ) {
     return false;
   } else return true;

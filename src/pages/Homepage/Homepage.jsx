@@ -3,14 +3,14 @@ import useDebounce from 'hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';
 import Loading from 'components/Loading/Loading';
+import useFirstRender from 'hooks/useFirstRender';
 import React, { useEffect, useState } from 'react';
 import Contacts from 'components/Contacts/Contacts';
-import useInitialOptions from 'hooks/useInitialOptions';
-import Pagination from 'components/Pagination/Pagination';
-import { shouldChangeUrl } from 'utils/shouldChangeUrl';
-import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
 import NotFound from 'components/NotFound/NotFound';
 import RenderIf from 'components/RenderIf/RenderIf';
+import useInitialOptions from 'hooks/useInitialOptions';
+import Pagination from 'components/Pagination/Pagination';
+import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
 
 // useReducer if router doesn't work
 // handle first site visit
@@ -35,6 +35,7 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [skip, setSkip] = useState(initialSkip);
   const [total, setTotal] = useState(1);
+  const firstRender = useFirstRender();
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -51,19 +52,15 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
+  console.log('first:', firstRender);
+
   const getSearchResult = async () => {
     setLoading(true);
     const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
     const data = await client('passenger/' + query + (skip - 1) * 36);
+    console.log(data);
     setLoading(false);
-    if (
-      shouldChangeUrl(
-        initialSearchOption,
-        initialSearchValue,
-        initialOrder,
-        initialSkip,
-      )
-    ) {
+    if (!firstRender) {
       navigate(query + skip);
     }
     setContacts(data.items);

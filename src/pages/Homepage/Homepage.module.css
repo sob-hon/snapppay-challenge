@@ -11,10 +11,12 @@
 }
 
 .recentlyVisitedWrapper {
-  margin-top: 10px;
+  margin-top: 30px;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 21px;
   flex-wrap: wrap;
-  padding-inline: 15%;
+  padding: 5%;
+  padding-top: 0;
+  background-color: #f2f5f8;
 }

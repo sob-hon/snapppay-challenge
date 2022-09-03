@@ -54,8 +54,8 @@ const Homepage = () => {
 
   const getSearchResult = async () => {
     setLoading(true);
-    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=30&skip=`;
-    const data = await client('passenger/' + query + (skip - 1) * 30);
+    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
+    const data = await client('passenger/' + query + (skip - 1) * 36);
     setLoading(false);
     if (
       shouldChangeUrl(
@@ -99,6 +99,7 @@ const Homepage = () => {
               ),
             )}
           </div>
+          <span>--------------------------------------------------</span>
         </>
       ) : (
         ''

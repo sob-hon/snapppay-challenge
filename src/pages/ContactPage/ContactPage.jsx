@@ -40,9 +40,9 @@ export const ContactPage = () => {
             alt="Avatar"
           />
           <div className={styles.container}>
-            <h4
+            <h2 
               className={styles.fullName}
-            >{`${contact?.first_name} ${contact?.last_name}`}</h4>
+            >{`${contact?.first_name} ${contact?.last_name}`}</h2>
 
             <p className={styles.about}>{contact?.note}</p>
 

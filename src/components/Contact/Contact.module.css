@@ -1,3 +1,36 @@
 .contactWrapper {
-  text-align: center;
+  background-color: #fff;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px;
+  min-width: 250px;
+}
+
+.contactImg {
+  border-radius: 50%;
+  background: #daffe9;
+}
+
+.contactFullNameWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactFullName {
+  font-size: 18px;
+  color: #212529;
+}
+
+.contactShortNote {
+  font-size: 15px;
+  color: #777b7d;
+}
+
+
+@media screen and (max-width: 426px){
+  .contactWrapper {
+    width: 100%;
+  }
 }

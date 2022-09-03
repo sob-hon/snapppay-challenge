@@ -1,5 +1,4 @@
 import { client } from 'utils/client';
-import styles from './Homepage.module.css';
 import useDebounce from 'hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';

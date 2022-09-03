@@ -3,14 +3,13 @@ import styles from './Homepage.module.css';
 import useDebounce from 'hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';
-import Contact from 'components/Contact/Contact';
 import Loading from 'components/Loading/Loading';
 import React, { useEffect, useState } from 'react';
 import Contacts from 'components/Contacts/Contacts';
 import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
-import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
 import { shouldChangeUrl } from 'utils/shouldChangeUrl';
+import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
 
 // useReducer if router doesn't work
 // handle first site visit
@@ -35,7 +34,6 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [skip, setSkip] = useState(initialSkip);
   const [total, setTotal] = useState(1);
-  const recentContactsContext = useRecentlyVisitedContacts();
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -87,22 +85,7 @@ const Homepage = () => {
         sortOptionChangedHandler={sortOptionChangedHandler}
       />
 
-      {recentContactsContext.recentlyVisitedContacts?.length !== 0 ? (
-        <>
-          <h2 className={styles.recentlyVisitedHeader}>
-            Recently Visited Contacts
-          </h2>
-          <div className={styles.recentlyVisitedWrapper}>
-            {recentContactsContext?.recentlyVisitedContacts?.map(
-              recentContact => (
-                <Contact key={recentContact.id} contact={recentContact} />
-              ),
-            )}
-          </div>
-        </>
-      ) : (
-        ''
-      )}
+      <RecentlyVisitedContacts />
 
       {loading ? (
         <Loading />

@@ -5,19 +5,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.recentlyVisitedHeader {
-  text-align: center;
-  color: #404040;
-}
-
-.recentlyVisitedWrapper {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 21px;
-  flex-wrap: wrap;
-  padding: 5%;
-  padding-block: 0;
-  background-color: #f2f5f8;
-}

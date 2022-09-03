@@ -8,6 +8,7 @@
 
 .recentlyVisitedHeader {
   text-align: center;
+  color: #404040;
 }
 
 .recentlyVisitedWrapper {
@@ -17,6 +18,6 @@
   gap: 21px;
   flex-wrap: wrap;
   padding: 5%;
-  padding-top: 0;
+  padding-block: 0;
   background-color: #f2f5f8;
 }

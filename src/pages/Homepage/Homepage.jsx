@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';
 import Loading from 'components/Loading/Loading';
 import useFirstRender from 'hooks/useFirstRender';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Contacts from 'components/Contacts/Contacts';
 import NotFound from 'components/NotFound/NotFound';
 import RenderIf from 'components/RenderIf/RenderIf';
@@ -23,10 +23,24 @@ import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/Recently
 // add custom api function ✅
 // make radio input & label a separate component ✅
 // absolute import ✅
+const initialState = {
+  loading: false,
+};
+
+const stateReducer = (state, action) => {
+  switch (action.type) {
+    case 'CHANGE_LOADING': {
+      return { ...state, loading: !state.loading };
+    }
+    default:
+      return initialState;
+  }
+};
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState();
+  const [total, setTotal] = useState(1);
   const navigate = useNavigate();
   const { initialSearchOption, initialSearchValue, initialOrder, initialSkip } =
     useInitialOptions();
@@ -34,10 +48,10 @@ const Homepage = () => {
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [skip, setSkip] = useState(initialSkip);
-  const [total, setTotal] = useState(1);
   const firstRender = useFirstRender();
-
   const debouncedValue = useDebounce(searchValue, 500);
+
+  const [state, dispatch] = useReducer(stateReducer, initialState);
 
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);
@@ -83,6 +97,10 @@ const Homepage = () => {
         sortOptionChangedHandler={sortOptionChangedHandler}
       />
 
+      {/* <div onClick={() => dispatch({ type: 'CHANGE_LOADING' })}>
+        handle loading
+      </div> */}
+
       <RecentlyVisitedContacts />
 
       <RenderIf isTrue={loading}>
@@ -95,11 +113,11 @@ const Homepage = () => {
 
       <RenderIf isTrue={!(loading && contacts?.length === 0)}>
         <Contacts contacts={contacts} />
-      </RenderIf>
-
-      <RenderIf isTrue={contacts?.length !== 0}>
         <Pagination setSkip={setSkip} skip={skip} totalData={total} />
       </RenderIf>
+
+      {/* <RenderIf isTrue={contacts?.length !== 0 && !loading}>
+      </RenderIf> */}
     </>
   );
 };

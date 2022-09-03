@@ -1,4 +1,6 @@
-function RadioButton({ id, value, checked, onChange, name, label }) {
+import styles from "./RadioButton.module.css"
+
+const RadioButton = ({ id, value, checked, onChange, name, label }) => {
   return (
     <div>
       <input
@@ -8,10 +10,13 @@ function RadioButton({ id, value, checked, onChange, name, label }) {
         name={name}
         checked={checked}
         onChange={onChange}
+        className={styles.radioButtonInput}
       />
-      <label htmlFor={id}>{label}</label>
+      <label className={styles.radioButtonLabel} htmlFor={id}>
+        {label}
+      </label>
     </div>
   );
-}
+};
 
 export { RadioButton };

@@ -1,7 +1,7 @@
 const getPaginationGenerator = (
   currentPageNumber,
   totalPageNumber,
-  offset = 3,
+  offset = 2,
 ) => {
   // By doing this, when we are close to the beginning or end of the pagination, two numbers are generated after/before the current page,
   // but when we are far from these points (in the middle of the pagination), we generate only one number after/before the current page.

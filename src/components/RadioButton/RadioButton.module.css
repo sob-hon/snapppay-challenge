@@ -1,0 +1,18 @@
+.radioButtonInput {
+  display: none;
+}
+
+.radioButtonLabel {
+  border-radius: 3px;
+  padding: 7px;
+  background-color: #00d170;
+  color: #fff;
+  border-right: 2px solid #c6ffc9;
+  transition: all 0.3s ease-in-out;
+}
+
+.radioButtonLabel:hover {
+  background: #fff;
+  color: #00d170;
+  transform: rotate(50deg);
+}

@@ -20,6 +20,7 @@ const HomeForm = ({
           onChange={optionChangeHandler}
           label={'First Name'}
           name={'field-of-search'}
+          className={styles.firstNameInput}
         />
         <RadioButton
           id="lastName"

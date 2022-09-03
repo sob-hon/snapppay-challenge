@@ -10,6 +10,8 @@ import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import { shouldChangeUrl } from 'utils/shouldChangeUrl';
 import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
+import NotFound from 'components/NotFound/NotFound';
+import RenderIf from 'components/RenderIf/RenderIf';
 
 // useReducer if router doesn't work
 // handle first site visit
@@ -87,20 +89,21 @@ const Homepage = () => {
 
       <RecentlyVisitedContacts />
 
-      {loading ? (
+      <RenderIf isTrue={loading}>
         <Loading />
-      ) : contacts?.length === 0 ? (
-        <div className={styles.notFound}>
-          Not found contacts with desired inputs
-        </div>
-      ) : (
+      </RenderIf>
+
+      <RenderIf isTrue={contacts?.length === 0}>
+        <NotFound />
+      </RenderIf>
+
+      <RenderIf isTrue={!(loading && contacts?.length === 0)}>
         <Contacts contacts={contacts} />
-      )}
-      {contacts?.length !== 0 ? (
+      </RenderIf>
+
+      <RenderIf isTrue={contacts?.length !== 0}>
         <Pagination setSkip={setSkip} skip={skip} totalData={total} />
-      ) : (
-        ''
-      )}
+      </RenderIf>
     </>
   );
 };

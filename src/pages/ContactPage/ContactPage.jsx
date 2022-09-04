@@ -15,7 +15,6 @@ import Loading from 'components/Loading/Loading';
 import RenderIf from 'components/RenderIf/RenderIf';
 import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
 import { setItem } from 'utils/localStorage';
-import NotFound from 'components/NotFound/NotFound';
 import { client } from 'utils/client';
 import Error from 'components/Error/Error';
 

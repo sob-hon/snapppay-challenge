@@ -1,7 +1,26 @@
 .notFound {
   width: 100vw;
   height: 50vh;
+  gap: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.notFound svg{
+  width: 45px;
+  height: 45px;
+  color: darkcyan;
+}
+
+.notFoundText {
+  text-align: center;
+  font-size: 20px;
+}
+
+@media screen and (max-width: 425px){
+  .notFoundText {
+    font-size: 18px;
+    max-width: 200px;
+  }
 }

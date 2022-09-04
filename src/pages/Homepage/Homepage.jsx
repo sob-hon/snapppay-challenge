@@ -1,6 +1,6 @@
 import { client } from 'utils/client';
 import useDebounce from 'hooks/useDebounce';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';
 import Loading from 'components/Loading/Loading';
 import useFirstRender from 'hooks/useFirstRender';

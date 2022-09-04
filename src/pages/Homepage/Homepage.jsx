@@ -11,6 +11,9 @@ import RenderIf from 'components/RenderIf/RenderIf';
 import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
+import Error from 'components/Error/Error';
+
+const DATA_PER_PAGE_LIMIT = 36;
 
 // handle first site visit ✅
 // create custom components ✅
@@ -27,7 +30,7 @@ import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/Recently
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
-  const [contacts, setContacts] = useState();
+  const [contacts, setContacts] = useState(null);
   const [total, setTotal] = useState(1);
   const navigate = useNavigate();
   const { initialSearchOption, initialSearchValue, initialOrder, initialSkip } =
@@ -36,27 +39,34 @@ const Homepage = () => {
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [skip, setSkip] = useState(initialSkip);
+  const [error, setError] = useState(false);
   const firstRender = useFirstRender();
   const debouncedValue = useDebounce(searchValue, 500);
 
   const queryGenerator = () => {
-    return `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
+    return `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=${DATA_PER_PAGE_LIMIT}&skip=`;
+  };
+
+  const shouldRenderPagination = () => {
+    return contacts?.length !== 0 && !loading && !error;
   };
 
   const getSearchResult = async () => {
-    // try catch => toast
     try {
       setLoading(true);
       const query = queryGenerator();
       if (!firstRender) {
         navigate(query + skip);
       }
-      const data = await client('passenger/' + query + (skip - 1) * 36);
-      setLoading(false);
+      const data = await client(
+        'passenger/' + query + (skip - 1) * DATA_PER_PAGE_LIMIT,
+      );
       setContacts(data?.items);
       setTotal(data?.meta?.total);
     } catch (err) {
-      console.log(err);
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,10 +98,6 @@ const Homepage = () => {
         sortOptionChangedHandler={sortOptionChangedHandler}
       />
 
-      {/* <div onClick={() => dispatch({ type: 'CHANGE_LOADING' })}>
-        handle loading
-      </div> */}
-
       <RecentlyVisitedContacts />
 
       <RenderIf renderCondition={loading}>
@@ -102,11 +108,15 @@ const Homepage = () => {
         <NotFound />
       </RenderIf>
 
-      <RenderIf renderCondition={!(loading && contacts?.length === 0)}>
+      <RenderIf renderCondition={error}>
+        <Error />
+      </RenderIf>
+
+      <RenderIf renderCondition={contacts}>
         <Contacts contacts={contacts} />
       </RenderIf>
 
-      <RenderIf renderCondition={contacts?.length !== 0 && !loading}>
+      <RenderIf renderCondition={shouldRenderPagination()}>
         <Pagination setSkip={setSkip} skip={skip} totalData={total} />
       </RenderIf>
     </>

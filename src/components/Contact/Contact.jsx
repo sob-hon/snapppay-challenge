@@ -1,13 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setItem } from 'utils/localStorage';
 import { truncate } from 'utils/truncate';
 import BrokenRobotImage from '../../assets/broken-robot.png';
-import { useRecentlyVisitedContacts } from '../../context/recentContactsContext';
 import styles from './Contact.module.css';
 
 const Contact = ({ contact }) => {
-  const recentContactsContext = useRecentlyVisitedContacts();
   const navigate = useNavigate();
 
   const contactClickedHandler = () => {

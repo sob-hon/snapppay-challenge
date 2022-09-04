@@ -6,11 +6,17 @@
   gap: 11px;
   padding: 10px;
   min-width: 250px;
+  cursor: pointer;
+}
+
+.contactWrapper:hover .contactImg {
+  transform: scale(1.4);
 }
 
 .contactImg {
   border-radius: 50%;
   background: #daffe9;
+  transition: all ease-out 0.3s;
 }
 
 .contactFullNameWrapper {
@@ -21,6 +27,13 @@
 .contactFullName {
   font-size: 18px;
   color: #212529;
+  transition: all ease-out 0.3s;
+}
+
+.contactWrapper:hover .contactFullName {
+  scale: 1.2;
+  translate: 20px;
+  color: #00d170;
 }
 
 .contactShortNote {
@@ -28,8 +41,7 @@
   color: #777b7d;
 }
 
-
-@media screen and (max-width: 426px){
+@media screen and (max-width: 426px) {
   .contactWrapper {
     width: 100%;
   }

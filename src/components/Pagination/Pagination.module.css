@@ -7,6 +7,7 @@
 }
 
 .paginateBtn {
+  cursor: pointer;
   border-radius: 50%;
   outline: none;
   border: none;
@@ -14,17 +15,25 @@
   height: 40px;
   font-size: 16px;
   font-weight: bold;
-  background: #f1f1f1;
+  background: #fff;
 }
 
 .pageNumber {
+  cursor: pointer;
   border-radius: 50%;
   width: 20px;
   padding: 7px;
   text-align: center;
+  transition: background 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pageNumber:hover {
+  background: #fff;
+  color: black;
 }
 
 .pageNumberActive {
+  cursor: pointer;
   background: rgb(0, 204, 109);
-  color: white;
+  color: #fff;
 }

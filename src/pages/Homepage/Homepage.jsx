@@ -1,6 +1,6 @@
 import { client } from 'utils/client';
 import useDebounce from 'hooks/useDebounce';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import HomeForm from 'components/Form/HomeForm';
 import Loading from 'components/Loading/Loading';
 import useFirstRender from 'hooks/useFirstRender';
@@ -12,6 +12,7 @@ import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
 import Error from 'components/Error/Error';
+import useQueryState from 'hooks/useQueryState';
 
 const DATA_PER_PAGE_LIMIT = 36;
 
@@ -33,18 +34,17 @@ const Homepage = () => {
   const [contacts, setContacts] = useState(null);
   const [total, setTotal] = useState(1);
   const navigate = useNavigate();
-  const { initialSearchOption, initialSearchValue, initialOrder, initialSkip } =
-    useInitialOptions();
-  const [sortOrder, setSortOrder] = useState(initialOrder);
+  const [sortOrder, setSortOrder] = useQueryState('sort', 'createdAt ASC');
+  const [skip, setSkip] = useQueryState('skip', 1, { convertToNumber: true });
+  const { initialSearchOption, initialSearchValue } = useInitialOptions();
   const [selectedOption, setSelectedOption] = useState(initialSearchOption);
   const [searchValue, setSearchValue] = useState(initialSearchValue);
-  const [skip, setSkip] = useState(initialSkip);
   const [error, setError] = useState(false);
   const firstRender = useFirstRender();
   const debouncedValue = useDebounce(searchValue, 500);
 
   const queryGenerator = () => {
-    return `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=${DATA_PER_PAGE_LIMIT}&skip=`;
+    return `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=${sortOrder}&limit=${DATA_PER_PAGE_LIMIT}&skip=`;
   };
 
   const shouldRenderPagination = () => {

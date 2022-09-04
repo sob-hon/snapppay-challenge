@@ -49,16 +49,16 @@ const HomeForm = ({
       <div className={styles.orderTypeWrapper}>
         <RadioButton
           id="ascending"
-          value="ASC"
-          checked={sortOrder === 'ASC'}
+          value="createdAt ASC"
+          checked={sortOrder === 'createdAt ASC'}
           onChange={sortOptionChangedHandler}
           label={'Ascending'}
           name={'sort-order'}
         />
         <RadioButton
           id="descending"
-          value="DESC"
-          checked={sortOrder === 'DESC'}
+          value="createdAt DESC"
+          checked={sortOrder === 'createdAt DESC'}
           onChange={sortOptionChangedHandler}
           label={'Descending'}
           name={'sort-order'}

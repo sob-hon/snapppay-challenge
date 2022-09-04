@@ -11,7 +11,6 @@ import RenderIf from 'components/RenderIf/RenderIf';
 import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
-import useFetch from 'hooks/useFetch';
 
 // handle first site visit ✅
 // create custom components ✅
@@ -61,9 +60,6 @@ const Homepage = () => {
     }
   };
 
-  const { data, loadingg, error } = useFetch(getSearchResult);
-  console.log('data is a :', data);
-
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);
     setSkip(1);
@@ -98,19 +94,19 @@ const Homepage = () => {
 
       <RecentlyVisitedContacts />
 
-      <RenderIf isTrue={loading}>
+      <RenderIf renderCondition={loading}>
         <Loading />
       </RenderIf>
 
-      <RenderIf isTrue={contacts?.length === 0}>
+      <RenderIf renderCondition={contacts?.length === 0}>
         <NotFound />
       </RenderIf>
 
-      <RenderIf isTrue={!(loading && contacts?.length === 0)}>
+      <RenderIf renderCondition={!(loading && contacts?.length === 0)}>
         <Contacts contacts={contacts} />
       </RenderIf>
 
-      <RenderIf isTrue={contacts?.length !== 0 && !loading}>
+      <RenderIf renderCondition={contacts?.length !== 0 && !loading}>
         <Pagination setSkip={setSkip} skip={skip} totalData={total} />
       </RenderIf>
     </>

@@ -9,7 +9,9 @@ const RecentlyVisitedContacts = () => {
   return (
     <>
       <RenderIf
-        isTrue={recentContactsContext.recentlyVisitedContacts?.length !== 0}
+        renderCondition={
+          recentContactsContext.recentlyVisitedContacts?.length !== 0
+        }
       >
         <h2 className={styles.recentlyVisitedHeader}>
           Recently Visited Contacts

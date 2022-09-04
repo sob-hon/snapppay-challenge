@@ -1,6 +1,6 @@
 import React from 'react';
-const RenderIf = ({ children, isTrue }) => {
-  return <>{isTrue ? children : ''}</>;
+const RenderIf = ({ children, renderCondition }) => {
+  return <>{renderCondition ? children : ''}</>;
 };
 
 export default RenderIf;

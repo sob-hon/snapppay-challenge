@@ -5,7 +5,7 @@ import styles from './Detail.module.css';
 const Detail = ({ detail, subField, Icon }) => {
   return (
     <>
-      <RenderIf isTrue={detail[subField]}>
+      <RenderIf renderCondition={detail[subField]}>
         <div className={styles.content}>
           {Icon}
           <p>{detail[subField]}</p>

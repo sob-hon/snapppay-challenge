@@ -15,51 +15,73 @@ import Loading from 'components/Loading/Loading';
 import RenderIf from 'components/RenderIf/RenderIf';
 import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
 import { setItem } from 'utils/localStorage';
+import NotFound from 'components/NotFound/NotFound';
+import { client } from 'utils/client';
+
+const MAXIMUM_RECENTLY_VISITED_CONTACTS_AMOUNT = 4;
 
 export const ContactPage = () => {
   const urlParams = useParams();
-  const [contact, setContact] = useState({});
+  const [contact, setContact] = useState(null);
   const [loading, setLoading] = useState(false);
-  const recentContactsContext = useRecentlyVisitedContacts();
+  const [error, setError] = useState(false);
+  const { recentlyVisitedContacts, setRecentlyVisitedContacts } =
+    useRecentlyVisitedContacts();
+
+  const isAlreadyInVisitedContacts = currentItemID => {
+    return recentlyVisitedContacts.find(
+      contact => contact.id === currentItemID,
+    );
+  };
+
+  const hasReachedMaximumRecentlyVisitedContactsAmount = () => {
+    return (
+      recentlyVisitedContacts.length ===
+      MAXIMUM_RECENTLY_VISITED_CONTACTS_AMOUNT
+    );
+  };
+
+  const calculateNewContact = data => {
+    if (isAlreadyInVisitedContacts(data.id)) {
+      return recentlyVisitedContacts;
+    }
+    const newContacts = recentlyVisitedContacts;
+    if (hasReachedMaximumRecentlyVisitedContactsAmount()) {
+      newContacts.shift();
+      newContacts.push(data);
+      return [...newContacts];
+    }
+    return [...recentlyVisitedContacts, data];
+  };
 
   const getContactById = async id => {
-    // try catch
-    setLoading(true);
-    const query = `http://localhost:1337/passenger/${id}`;
-    const response = await fetch(query);
-    const data = await response.json();
-    let newContacts;
-    recentContactsContext.setRecentlyVisitedContacts(prevContacts => {
-      if (prevContacts.find(c => c.id === data.id)) return prevContacts;
-      if (prevContacts.length === 4) {
-        newContacts = prevContacts;
-        newContacts.shift();
-        newContacts.push(data);
-        newContacts = [...newContacts];
-        return newContacts;
-      } else {
-        newContacts = [...prevContacts, data];
-        return newContacts;
+    try {
+      setLoading(true);
+      const query = `passenger/${id}`;
+      const data = await client(query);
+      const newContacts = calculateNewContact(data);
+      setRecentlyVisitedContacts(newContacts);
+      setContact(data);
+      if (newContacts !== undefined) {
+        setItem('recentlyVisitedContacts', JSON.stringify(newContacts));
       }
-    });
-    if (newContacts !== undefined) {
-      setItem('recentlyVisitedContacts', JSON.stringify(newContacts));
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    setContact(data);
   };
 
   useEffect(() => {
     getContactById(urlParams.passenger_id);
-    // eslint-disable-next-line
   }, []);
 
   return (
     <>
-      <RenderIf isTrue={loading}>
+      <RenderIf renderCondition={loading}>
         <Loading />
       </RenderIf>
-      <RenderIf isTrue={!loading}>
+      <RenderIf renderCondition={contact}>
         <div className={styles.cardWrapper}>
           <div className={styles.card}>
             <div className={styles.banner}></div>
@@ -100,6 +122,9 @@ export const ContactPage = () => {
             </div>
           </div>
         </div>
+      </RenderIf>
+      <RenderIf renderCondition={error}>
+        <NotFound />
       </RenderIf>
     </>
   );

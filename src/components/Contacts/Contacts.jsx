@@ -8,7 +8,7 @@ import styles from './Contacts.module.css';
 const Contacts = ({ contacts }) => {
   return (
     <>
-      <RenderIf isTrue={contacts?.length > 0}>
+      <RenderIf renderCondition={contacts?.length > 0}>
         <h2 className={styles.ContactsHeader}>Contacts</h2>
       </RenderIf>
       <div className={styles.ContactsWrapper}>

@@ -13,17 +13,37 @@ import { MdEmail } from 'react-icons/md';
 import Detail from 'components/Detail/Detail';
 import Loading from 'components/Loading/Loading';
 import RenderIf from 'components/RenderIf/RenderIf';
+import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
+import { setItem } from 'utils/localStorage';
 
 export const ContactPage = () => {
   const urlParams = useParams();
   const [contact, setContact] = useState({});
   const [loading, setLoading] = useState(false);
+  const recentContactsContext = useRecentlyVisitedContacts();
 
   const getContactById = async id => {
     setLoading(true);
     const query = `http://localhost:1337/passenger/${id}`;
     const response = await fetch(query);
     const data = await response.json();
+    let newContacts;
+    recentContactsContext.setRecentlyVisitedContacts(prevContacts => {
+      if (prevContacts.find(c => c.id === data.id)) return prevContacts;
+      if (prevContacts.length === 4) {
+        newContacts = prevContacts;
+        newContacts.shift();
+        newContacts.push(data);
+        newContacts = [...newContacts];
+        return newContacts;
+      } else {
+        newContacts = [...prevContacts, data];
+        return newContacts;
+      }
+    });
+    if (newContacts !== undefined) {
+      setItem('recentlyVisitedContacts', JSON.stringify(newContacts));
+    }
     setLoading(false);
     setContact(data);
   };

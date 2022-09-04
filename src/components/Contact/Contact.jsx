@@ -11,23 +11,6 @@ const Contact = ({ contact }) => {
   const navigate = useNavigate();
 
   const contactClickedHandler = () => {
-    let newContacts;
-    recentContactsContext.setRecentlyVisitedContacts(prevContacts => {
-      if (prevContacts.find(c => c.id === contact.id)) return prevContacts;
-      if (prevContacts.length === 4) {
-        newContacts = prevContacts;
-        newContacts.shift();
-        newContacts.push(contact);
-        newContacts = [...newContacts];
-        return newContacts;
-      } else {
-        newContacts = [...prevContacts, contact];
-        return newContacts;
-      }
-    });
-    if (newContacts !== undefined) {
-      setItem('recentlyVisitedContacts', JSON.stringify(newContacts));
-    }
     navigate(`/passenger/${contact.id}`);
   };
 

@@ -1,0 +1,17 @@
+.errorWrapper {
+  height: 55vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: 50px;
+}
+
+.errorWrapper svg{
+  width: 45px;
+  height: 54px;
+  color: crimson;
+}
+
+.errorText {
+  font-size: 20px;
+}

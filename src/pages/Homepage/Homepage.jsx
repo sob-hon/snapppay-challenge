@@ -105,7 +105,7 @@ const Homepage = () => {
       </RenderIf>
 
       <RenderIf renderCondition={contacts?.length === 0}>
-        <NotFound />
+        <NotFound text={'Not found contacts with desired inputs'} />
       </RenderIf>
 
       <RenderIf renderCondition={error}>

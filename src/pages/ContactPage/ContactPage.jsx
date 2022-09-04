@@ -17,6 +17,7 @@ import { useRecentlyVisitedContacts } from 'context/recentContactsContext';
 import { setItem } from 'utils/localStorage';
 import NotFound from 'components/NotFound/NotFound';
 import { client } from 'utils/client';
+import Error from 'components/Error/Error';
 
 const MAXIMUM_RECENTLY_VISITED_CONTACTS_AMOUNT = 4;
 
@@ -124,7 +125,7 @@ export const ContactPage = () => {
         </div>
       </RenderIf>
       <RenderIf renderCondition={error}>
-        <NotFound />
+        <Error />
       </RenderIf>
     </>
   );

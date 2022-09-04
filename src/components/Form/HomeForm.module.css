@@ -4,12 +4,12 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-block: 20px;
 }
 
 .searchTypeWrapper {
   display: flex;
-  margin-top: 10px;
+  justify-content: center;
   border-radius: 5px;
   padding: 10px;
   border-radius: 4px;
@@ -17,8 +17,29 @@
   min-width: 306px;
 }
 
+.searchTextInput {
+  outline: none;
+  border: none;
+  padding: 8px;
+  font-size: 17px;
+  color: #404040;
+  border-radius: 3px;
+  transition: all 0.2s ease-in;
+}
+
+.searchTextInput:focus {
+  box-shadow: 0 0 8px 1.5px #00d170;
+}
+
 .orderTypeWrapper {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  padding: 10px;
+}
+
+@media screen and (min-width: 766px) {
+  .formWrapper {
+    flex-direction: row;
+    gap: 0;
+  }
 }

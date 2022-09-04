@@ -43,6 +43,8 @@ const HomeForm = ({
         type="text"
         value={searchValue}
         onChange={searchValueChangeHandler}
+        className={styles.searchTextInput}
+        placeholder="Search ..."
       />
       <div className={styles.orderTypeWrapper}>
         <RadioButton

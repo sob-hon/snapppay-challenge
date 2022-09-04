@@ -113,11 +113,11 @@ const Homepage = () => {
 
       <RenderIf isTrue={!(loading && contacts?.length === 0)}>
         <Contacts contacts={contacts} />
-        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
       </RenderIf>
 
-      {/* <RenderIf isTrue={contacts?.length !== 0 && !loading}>
-      </RenderIf> */}
+      <RenderIf isTrue={contacts?.length !== 0 && !loading}>
+        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
+      </RenderIf>
     </>
   );
 };

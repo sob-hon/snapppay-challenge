@@ -23,19 +23,23 @@ import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/Recently
 // add custom api function ✅
 // make radio input & label a separate component ✅
 // absolute import ✅
-const initialState = {
-  loading: false,
-};
+// const initialState = {
+//   sortOrder: 'ASC',
+//   selectedOption: 'first_name',
+//   searchValue: '',
+//   skip: '',
+//   limit: '',
+// };
 
-const stateReducer = (state, action) => {
-  switch (action.type) {
-    case 'CHANGE_LOADING': {
-      return { ...state, loading: !state.loading };
-    }
-    default:
-      return initialState;
-  }
-};
+// const stateReducer = (state, action) => {
+//   switch (action.type) {
+//     case 'CHANGE_LOADING': {
+//       return { ...state, loading: !state.loading };
+//     }
+//     default:
+//       return initialState;
+//   }
+// };
 
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
@@ -51,7 +55,7 @@ const Homepage = () => {
   const firstRender = useFirstRender();
   const debouncedValue = useDebounce(searchValue, 500);
 
-  const [state, dispatch] = useReducer(stateReducer, initialState);
+  // const [state, dispatch] = useReducer(stateReducer, initialState);
 
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);

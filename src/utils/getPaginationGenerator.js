@@ -3,8 +3,6 @@ const getPaginationGenerator = (
   totalPageNumber,
   offset = 2,
 ) => {
-  // By doing this, when we are close to the beginning or end of the pagination, two numbers are generated after/before the current page,
-  // but when we are far from these points (in the middle of the pagination), we generate only one number after/before the current page.
   const offsetNumber =
     currentPageNumber <= offset || currentPageNumber > totalPageNumber - offset
       ? offset
@@ -12,10 +10,8 @@ const getPaginationGenerator = (
   const numbersList = [];
   const numbersListWithDots = [];
 
-  // If itemsPerPage is less than what the user selected with the Select component or if there is no page or only one page:
   if (totalPageNumber <= 1 || totalPageNumber === undefined) return [1];
 
-  // Create list of numbers:
   numbersList.push(1);
   for (
     let i = currentPageNumber - offsetNumber;
@@ -28,7 +24,6 @@ const getPaginationGenerator = (
   }
   numbersList.push(totalPageNumber);
 
-  // Add three dots to the list of numbers:
   numbersList.reduce((accumulator, currentValue) => {
     if (accumulator === 1) {
       numbersListWithDots.push(accumulator);

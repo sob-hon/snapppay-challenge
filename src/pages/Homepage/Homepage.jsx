@@ -16,19 +16,6 @@ import useQueryState from 'hooks/useQueryState';
 
 const DATA_PER_PAGE_LIMIT = 36;
 
-// handle first site visit ✅
-// create custom components ✅
-// change ui styles => card style
-// add skip to fetch from url ✅
-// add localStorage utility ✅
-// add recently visited contacts to local storage ✅
-// add custom api function ✅
-// make radio input & label a separate component ✅
-// absolute import ✅
-// useFetch hook
-// useQueryState
-// add try and catch
-
 const Homepage = () => {
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState(null);
@@ -117,7 +104,12 @@ const Homepage = () => {
       </RenderIf>
 
       <RenderIf renderCondition={shouldRenderPagination()}>
-        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
+        <Pagination
+          setSkip={setSkip}
+          skip={skip}
+          totalData={total}
+          dataPerPage={DATA_PER_PAGE_LIMIT}
+        />
       </RenderIf>
     </>
   );

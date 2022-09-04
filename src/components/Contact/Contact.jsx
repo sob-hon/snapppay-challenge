@@ -4,6 +4,8 @@ import { truncate } from 'utils/truncate';
 import BrokenRobotImage from '../../assets/broken-robot.png';
 import styles from './Contact.module.css';
 
+const MAXIMUM_NOTE_IN_BIO = 22;
+
 const Contact = ({ contact }) => {
   const navigate = useNavigate();
 
@@ -16,8 +18,6 @@ const Contact = ({ contact }) => {
       <img
         key={contact.id}
         src={contact.avatar ? contact.avatar : BrokenRobotImage}
-        width={50}
-        height={50}
         alt="contact"
         className={styles.contactImg}
       />
@@ -25,7 +25,9 @@ const Contact = ({ contact }) => {
         <h3 className={styles.contactFullName}>
           {contact.first_name} {contact.last_name}
         </h3>
-        <p className={styles.contactShortNote}>{truncate(contact.note, 22)}</p>
+        <p className={styles.contactShortNote}>
+          {truncate(contact.note, MAXIMUM_NOTE_IN_BIO)}
+        </p>
       </div>
     </div>
   );

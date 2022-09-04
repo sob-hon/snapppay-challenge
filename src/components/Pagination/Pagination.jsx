@@ -2,7 +2,7 @@ import React from 'react';
 import { getPaginationGenerator } from 'utils/getPaginationGenerator';
 import styles from './Pagination.module.css';
 
-const Pagination = ({ skip, setSkip, totalData, dataPerPage = 36 }) => {
+const Pagination = ({ skip, setSkip, totalData, dataPerPage }) => {
   const totalPages = Math.ceil(totalData / dataPerPage);
 
   const nextPageBtnClickedHandler = () => {

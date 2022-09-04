@@ -7,7 +7,6 @@ const Pagination = ({ skip, setSkip, totalData, dataPerPage = 36 }) => {
 
   const nextPageBtnClickedHandler = () => {
     if (skip !== totalPages) {
-      
       setSkip(prevPage => prevPage + 1);
     }
   };

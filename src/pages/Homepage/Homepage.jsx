@@ -1,7 +1,7 @@
 import { client } from 'utils/client';
 import useDebounce from 'hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
-import HomeForm from 'components/HomeForm/HomeForm';
+import HomeForm from 'components/Form/HomeForm';
 import Loading from 'components/Loading/Loading';
 import useFirstRender from 'hooks/useFirstRender';
 import React, { useEffect, useState } from 'react';
@@ -27,6 +27,9 @@ import useFetch from 'hooks/useFetch';
 // add try and catch
 
 const Homepage = () => {
+  const [loading, setLoading] = useState(false);
+  const [contacts, setContacts] = useState();
+  const [total, setTotal] = useState(1);
   const navigate = useNavigate();
   const { initialSearchOption, initialSearchValue, initialOrder, initialSkip } =
     useInitialOptions();
@@ -37,15 +40,29 @@ const Homepage = () => {
   const firstRender = useFirstRender();
   const debouncedValue = useDebounce(searchValue, 500);
 
-  const getSearchResult = async () => {
-    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
-    if (!firstRender) {
-      navigate(query + skip);
-    }
-    return client('passenger/' + query + (skip - 1) * 36);
+  const queryGenerator = () => {
+    return `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
   };
 
-  const { data, loading, error } = useFetch(getSearchResult);
+  const getSearchResult = async () => {
+    // try catch => toast
+    try {
+      setLoading(true);
+      const query = queryGenerator();
+      if (!firstRender) {
+        navigate(query + skip);
+      }
+      const data = await client('passenger/' + query + (skip - 1) * 36);
+      setLoading(false);
+      setContacts(data?.items);
+      setTotal(data?.meta?.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const { data, loadingg, error } = useFetch(getSearchResult);
+  console.log('data is a :', data);
 
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);
@@ -75,26 +92,26 @@ const Homepage = () => {
         sortOptionChangedHandler={sortOptionChangedHandler}
       />
 
+      {/* <div onClick={() => dispatch({ type: 'CHANGE_LOADING' })}>
+        handle loading
+      </div> */}
+
       <RecentlyVisitedContacts />
 
       <RenderIf isTrue={loading}>
         <Loading />
       </RenderIf>
 
-      <RenderIf isTrue={data?.items?.length === 0}>
+      <RenderIf isTrue={contacts?.length === 0}>
         <NotFound />
       </RenderIf>
 
-      <RenderIf isTrue={!(loading && data?.items?.length === 0)}>
-        <Contacts contacts={data?.items} />
+      <RenderIf isTrue={!(loading && contacts?.length === 0)}>
+        <Contacts contacts={contacts} />
       </RenderIf>
 
-      <RenderIf isTrue={data?.items?.length !== 0 && !loading}>
-        <Pagination
-          setSkip={setSkip}
-          skip={skip}
-          totalData={data?.meta?.total}
-        />
+      <RenderIf isTrue={contacts?.length !== 0 && !loading}>
+        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
       </RenderIf>
     </>
   );

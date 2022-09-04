@@ -1,6 +1,6 @@
+import Contact from 'components/Contact/Contact';
 import RenderIf from 'components/RenderIf/RenderIf';
 import React from 'react';
-import Contact from '../Contact/Contact';
 import styles from './Contacts.module.css';
 
 // should refactor

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { truncate } from 'utils/truncate';
-import BrokenRobotImage from '../../assets/broken-robot.png';
+import BrokenRobotImage from 'assets/broken-robot.png';
 import styles from './Contact.module.css';
 
 const MAXIMUM_NOTE_IN_BIO = 22;

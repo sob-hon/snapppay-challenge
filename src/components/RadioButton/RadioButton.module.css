@@ -19,5 +19,10 @@
 }
 
 .radioButtonLabel:active {
- transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.radioButtonLabelActive {
+  background: #fff;
+  color: #00d170;
 }

@@ -1,20 +1,19 @@
 import { client } from 'utils/client';
 import useDebounce from 'hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
-import HomeForm from 'components/Form/HomeForm';
+import HomeForm from 'components/HomeForm/HomeForm';
 import Loading from 'components/Loading/Loading';
 import useFirstRender from 'hooks/useFirstRender';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Contacts from 'components/Contacts/Contacts';
 import NotFound from 'components/NotFound/NotFound';
 import RenderIf from 'components/RenderIf/RenderIf';
 import useInitialOptions from 'hooks/useInitialOptions';
 import Pagination from 'components/Pagination/Pagination';
 import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/RecentlyVisitedContacts';
+import useFetch from 'hooks/useFetch';
 
-// useReducer if router doesn't work
-// handle first site visit
-// useFetch hook
+// handle first site visit ✅
 // create custom components ✅
 // change ui styles => card style
 // add skip to fetch from url ✅
@@ -23,28 +22,11 @@ import RecentlyVisitedContacts from 'components/RecentlyVisitedContacts/Recently
 // add custom api function ✅
 // make radio input & label a separate component ✅
 // absolute import ✅
-// const initialState = {
-//   sortOrder: 'ASC',
-//   selectedOption: 'first_name',
-//   searchValue: '',
-//   skip: '',
-//   limit: '',
-// };
-
-// const stateReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'CHANGE_LOADING': {
-//       return { ...state, loading: !state.loading };
-//     }
-//     default:
-//       return initialState;
-//   }
-// };
+// useFetch hook
+// useQueryState
+// add try and catch
 
 const Homepage = () => {
-  const [loading, setLoading] = useState(false);
-  const [contacts, setContacts] = useState();
-  const [total, setTotal] = useState(1);
   const navigate = useNavigate();
   const { initialSearchOption, initialSearchValue, initialOrder, initialSkip } =
     useInitialOptions();
@@ -55,7 +37,15 @@ const Homepage = () => {
   const firstRender = useFirstRender();
   const debouncedValue = useDebounce(searchValue, 500);
 
-  // const [state, dispatch] = useReducer(stateReducer, initialState);
+  const getSearchResult = async () => {
+    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
+    if (!firstRender) {
+      navigate(query + skip);
+    }
+    return client('passenger/' + query + (skip - 1) * 36);
+  };
+
+  const { data, loading, error } = useFetch(getSearchResult);
 
   const searchValueChangeHandler = event => {
     setSearchValue(event.target.value);
@@ -70,24 +60,8 @@ const Homepage = () => {
     setSortOrder(event.target.value);
   };
 
-  console.log('first:', firstRender);
-
-  const getSearchResult = async () => {
-    setLoading(true);
-    const query = `?where={"${selectedOption}":{"contains":"${debouncedValue}"}}&sort=createdAt ${sortOrder}&limit=36&skip=`;
-    const data = await client('passenger/' + query + (skip - 1) * 36);
-    console.log(data);
-    setLoading(false);
-    if (!firstRender) {
-      navigate(query + skip);
-    }
-    setContacts(data.items);
-    setTotal(data.meta.total);
-  };
-
   useEffect(() => {
     getSearchResult();
-    // eslint-disable-next-line
   }, [selectedOption, debouncedValue, sortOrder, skip]);
 
   return (
@@ -101,26 +75,26 @@ const Homepage = () => {
         sortOptionChangedHandler={sortOptionChangedHandler}
       />
 
-      {/* <div onClick={() => dispatch({ type: 'CHANGE_LOADING' })}>
-        handle loading
-      </div> */}
-
       <RecentlyVisitedContacts />
 
       <RenderIf isTrue={loading}>
         <Loading />
       </RenderIf>
 
-      <RenderIf isTrue={contacts?.length === 0}>
+      <RenderIf isTrue={data?.items?.length === 0}>
         <NotFound />
       </RenderIf>
 
-      <RenderIf isTrue={!(loading && contacts?.length === 0)}>
-        <Contacts contacts={contacts} />
+      <RenderIf isTrue={!(loading && data?.items?.length === 0)}>
+        <Contacts contacts={data?.items} />
       </RenderIf>
 
-      <RenderIf isTrue={contacts?.length !== 0 && !loading}>
-        <Pagination setSkip={setSkip} skip={skip} totalData={total} />
+      <RenderIf isTrue={data?.items?.length !== 0 && !loading}>
+        <Pagination
+          setSkip={setSkip}
+          skip={skip}
+          totalData={data?.meta?.total}
+        />
       </RenderIf>
     </>
   );

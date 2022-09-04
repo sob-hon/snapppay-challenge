@@ -10,6 +10,7 @@ const useInitialOptions = () => {
       initialSearchValue: '',
       initialOrder: 'ASC',
       initialSkip: 1,
+      initialLimit: 36,
     };
 
   const initialSearchOption = Object.keys(
@@ -20,12 +21,14 @@ const useInitialOptions = () => {
   ]['contains'];
   const initialOrder = searchParams.get('sort').slice(10);
   const initialSkip = Number(searchParams.get('skip'));
+  const initialLimit = Number(searchParams.get('limit'));
 
   return {
     initialSearchOption,
     initialSearchValue,
     initialOrder,
     initialSkip,
+    initialLimit,
   };
 };
 

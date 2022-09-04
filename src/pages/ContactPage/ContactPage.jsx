@@ -23,6 +23,7 @@ export const ContactPage = () => {
   const recentContactsContext = useRecentlyVisitedContacts();
 
   const getContactById = async id => {
+    // try catch
     setLoading(true);
     const query = `http://localhost:1337/passenger/${id}`;
     const response = await fetch(query);
@@ -50,7 +51,6 @@ export const ContactPage = () => {
 
   useEffect(() => {
     getContactById(urlParams.passenger_id);
-
     // eslint-disable-next-line
   }, []);
 

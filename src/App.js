@@ -6,8 +6,8 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <RecentlyVisitedContactsProvider>
+    <RecentlyVisitedContactsProvider>
+      <BrowserRouter>
         <Routes>
           <Route path="/passenger" element={<Homepage />} />
           <Route
@@ -17,8 +17,8 @@ function App() {
           />
           <Route path="/" element={<Navigate to="/passenger" replace />} />
         </Routes>
-      </RecentlyVisitedContactsProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </RecentlyVisitedContactsProvider>
   );
 }
 

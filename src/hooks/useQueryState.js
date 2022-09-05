@@ -8,11 +8,11 @@ const useQueryState = (key, defaultValue, options) => {
   if (queryParam) {
     if (options?.convertToJSON) {
       initialValue = JSON.parse(queryParam);
-    }
-    if(options?.convertToNumber){
+    } else if (options?.convertToNumber) {
       initialValue = Number(queryParam);
+    } else {
+      initialValue = queryParam;
     }
-    initialValue = queryParam;
   } else {
     initialValue = defaultValue;
   }
